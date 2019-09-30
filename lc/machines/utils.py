@@ -43,7 +43,7 @@ def getAllHostnames():
         cmd= "poe hostname"
 
     if debug() >= utilDebugLevel():
-        print "in getAllHostnames() ---- running command:  ", cmd
+        print("in getAllHostnames() ---- running command:  ", cmd)
     allHostname= []
     try:
         import subprocess
@@ -66,13 +66,13 @@ def getAllHostnames():
 
 
         if debug() >= utilDebugLevel():
-            print "DEBUG: before sort ", allHostname
+            print("DEBUG: before sort ", allHostname)
         sort_nicely(allHostname)
         if debug() >= utilDebugLevel():
-            print "DEBUG: after sort ", allHostname
+            print("DEBUG: after sort ", allHostname)
         
     except:
-        print "Unexpected error in utils.py getAllHostnames:", sys.exc_info()[0]
+        print("Unexpected error in utils.py getAllHostnames:", sys.exc_info()[0])
         return allHostname
     return allHostname
 
@@ -103,7 +103,7 @@ def findAvailableStep(inNodeList, inNodeUsedTotalDic, inNodeStepNumDic, inMaxPro
     stepWithAvailableProc= -1
 
     from operator import itemgetter
-    stepNodeDic= dict([ (v,k) for (k,v) in inNodeStepNumDic.iteritems() ])
+    stepNodeDic= dict([ (v,k) for (k,v) in inNodeStepNumDic.items() ])
 
     stepNum= 0          #start with 0
     import math
@@ -114,7 +114,7 @@ def findAvailableStep(inNodeList, inNodeUsedTotalDic, inNodeStepNumDic, inMaxPro
     #-------------------------------------------
     maxCount= len(inNodeList)
     if debug() >= utilDebugLevel():
-        print "DEBUG: in utils::findAvailableStep() -- numNodesToUse= " , numNodesToUse
+        print("DEBUG: in utils::findAvailableStep() -- numNodesToUse= " , numNodesToUse)
     comboList= []
     for ii in range (stepNum, maxCount):
         totalValue= ii
@@ -129,9 +129,9 @@ def findAvailableStep(inNodeList, inNodeUsedTotalDic, inNodeStepNumDic, inMaxPro
             comboList.append(tempCombo)
     sys.stdout.flush()
     if debug() >= utilDebugLevel():
-        print "DEBUG: in utils::findAvailableStep() -- inDesiredAmount= " , inDesiredAmount
-        print "DEBUG: in utils::findAvailableStep() -- comboList= " , comboList
-        print "DEBUG: in utils::findAvailableStep() -- nodeAvailDic= ", nodeAvailDic
+        print("DEBUG: in utils::findAvailableStep() -- inDesiredAmount= " , inDesiredAmount)
+        print("DEBUG: in utils::findAvailableStep() -- comboList= " , comboList)
+        print("DEBUG: in utils::findAvailableStep() -- nodeAvailDic= ", nodeAvailDic)
 
     #-------------------------------sum all the combo
     allSavedStep= []
@@ -143,12 +143,12 @@ def findAvailableStep(inNodeList, inNodeUsedTotalDic, inNodeStepNumDic, inMaxPro
                  savedStep= astep    # note the first step
              totalAvail= totalAvail + nodeAvailDic[ stepNodeDic[str(astep)] ]
              if debug() >= utilDebugLevel():
-                 print " nodeAvailDic[ ", stepNodeDic[str(astep)], "= ", nodeAvailDic[ stepNodeDic[str(astep)]] 
-                 print "eachCombo= ", eachCombo, "astep=", astep, "totalAvail=", totalAvail
+                 print(" nodeAvailDic[ ", stepNodeDic[str(astep)], "= ", nodeAvailDic[ stepNodeDic[str(astep)]]) 
+                 print("eachCombo= ", eachCombo, "astep=", astep, "totalAvail=", totalAvail)
              if totalAvail >= inDesiredAmount:
                  if savedStep != oldStep:
                      if debug() >= utilDebugLevel():
-                         print "returned savedStep= ", savedStep
+                         print("returned savedStep= ", savedStep)
                      return savedStep           
                  else:
                      allSavedStep.append(savedStep)
@@ -156,8 +156,8 @@ def findAvailableStep(inNodeList, inNodeUsedTotalDic, inNodeStepNumDic, inMaxPro
 
     if len(allSavedStep) > 0:
        if debug() >= utilDebugLevel():
-           print " ---- allSavedStep= ", allSavedStep
-           print " ---- returned savedStep= ", savedStep
+           print(" ---- allSavedStep= ", allSavedStep)
+           print(" ---- returned savedStep= ", savedStep)
        return allSavedStep[0]
     return None
 
@@ -167,7 +167,7 @@ def findAvailableStep(inNodeList, inNodeUsedTotalDic, inNodeStepNumDic, inMaxPro
 def addToUsedTotalDic(inNodeUsedDic, inNodeStepNumDic, inMaxProcsPerNode, inFirstStep, inAmountToAdd):
 
     from operator import itemgetter
-    stepNodeDic= dict([ (v,k) for (k,v) in inNodeStepNumDic.iteritems() ])
+    stepNodeDic= dict([ (v,k) for (k,v) in inNodeStepNumDic.items() ])
 
     import math
     numNodesToUse= max(1, int(math.ceil(float(inAmountToAdd)/float(inMaxProcsPerNode))) )
@@ -183,7 +183,7 @@ def addToUsedTotalDic(inNodeUsedDic, inNodeStepNumDic, inMaxProcsPerNode, inFirs
 def removeFromUsedTotalDic (inNodeUsedDic, inNodeStepNumDic, inMaxProcsPerNode, inFirstStep, inAmountToDelete, inStepId, inNodeList):
 
     from operator import itemgetter
-    stepNodeDic= dict([ (v,k) for (k,v) in inNodeStepNumDic.iteritems() ])
+    stepNodeDic= dict([ (v,k) for (k,v) in inNodeStepNumDic.items() ])
 
     import math
     numNodesToUse= max(1, int(math.ceil(float(inAmountToDelete)/float(inMaxProcsPerNode))) )
@@ -266,7 +266,7 @@ def getUnusedNode(inNodeList, desiredAmount, maxProcsPerNode,
     maxCount= len(inNodeList)
 
     from operator import itemgetter
-    stepNodeDic= dict([ (v,k) for (k,v) in inNodeStepNumDic.iteritems() ])
+    stepNodeDic= dict([ (v,k) for (k,v) in inNodeStepNumDic.items() ])
 
     nodeUsedTotalDic= usingRshFindTotalProcessorsUsed(inNodeList, stepNodeDic, maxProcsPerNode)
 
@@ -289,7 +289,7 @@ def getUnusedNode(inNodeList, desiredAmount, maxProcsPerNode,
     # Find all the combinations
     #-------------------------------------------
     if debug() >= utilDebugLevel():
-        print "DEBUG: in utils::getUnusedNode() -- numNodesToUse= " , numNodesToUse
+        print("DEBUG: in utils::getUnusedNode() -- numNodesToUse= " , numNodesToUse)
     comboList= []
     for ii in range (stepNum, maxCount):
         totalValue= ii
@@ -304,8 +304,8 @@ def getUnusedNode(inNodeList, desiredAmount, maxProcsPerNode,
             comboList.append(tempCombo)
     sys.stdout.flush()
     if debug() >= utilDebugLevel():
-        print "DEBUG: in utils::getUnusedNode() -- desiredAmount= " , desiredAmount
-        print "DEBUG: in utils::getUnusedNode() -- comboList= " , comboList
+        print("DEBUG: in utils::getUnusedNode() -- desiredAmount= " , desiredAmount)
+        print("DEBUG: in utils::getUnusedNode() -- comboList= " , comboList)
 
     #-------------------------------sum all the combo
     for eachCombo in comboList:
@@ -317,10 +317,10 @@ def getUnusedNode(inNodeList, desiredAmount, maxProcsPerNode,
                  savedStep= astep    # note the first step
              totalAvail= totalAvail + nodeAvailDic[ stepNodeDic[str(astep)] ]
              if debug() >= utilDebugLevel():
-                 print "eachCombo= ", eachCombo, "astep=", astep, "totalAvail=", totalAvail
+                 print("eachCombo= ", eachCombo, "astep=", astep, "totalAvail=", totalAvail)
              if totalAvail >= desiredAmount:
                  if debug() >= utilDebugLevel():
-                     print "returned savedStep= ", savedStep
+                     print("returned savedStep= ", savedStep)
                  return nodeUsedTotalDic, savedStep           
 
     return nodeUsedTotalDic, None
@@ -340,7 +340,7 @@ def getNodeAndStepIdAssociatedWithStepNumberLinux(inMaxStep):
     if (len(stdout_value)==0):
         
         if debug() >= utilDebugLevel():
-            print "DEBUG: in utils::getNodeAndStepIdAssociatedWithStepNumberLinux() -- whoami " 
+            print("DEBUG: in utils::getNodeAndStepIdAssociatedWithStepNumberLinux() -- whoami ") 
         userName= os.environ['LOGNAME']
     else:
         theLines= string.split(stdout_value, '\n')
@@ -354,7 +354,7 @@ def getNodeAndStepIdAssociatedWithStepNumberLinux(inMaxStep):
     #
     #  unset SQUEUE_FORMAT before using "squeue -s"
     #--------------------------------------------------
-    if os.environ.has_key('SQUEUE_FORMAT'):
+    if 'SQUEUE_FORMAT' in os.environ:
         oldSqueueFormatValue= os.environ['SQUEUE_FORMAT']
         os.unsetenv('SQUEUE_FORMAT') 
 
@@ -380,8 +380,8 @@ def getNodeAndStepIdAssociatedWithStepNumberLinux(inMaxStep):
                 nameList.append(splitVals[1])
 
     if debug() >= utilDebugLevel():
-        print "stepList= ", stepList
-        print "nameList= ", nameList
+        print("stepList= ", stepList)
+        print("nameList= ", nameList)
 
     #--------------------------------------------------
     # For the step number, determine the node assoicated with it.
@@ -400,7 +400,7 @@ def getNodeAndStepIdAssociatedWithStepNumberLinux(inMaxStep):
 
     # continue issuing the squeueCmd until all the nodes corresponding to the step are found.
     stepIdToCheck= None
-    while 1:  
+    while True:  
         proc = subprocess.Popen(squeueCmd, shell=True, stdout=subprocess.PIPE)
         stdout_value = proc.communicate()[0]
         if (len(stdout_value)==0):
@@ -410,7 +410,7 @@ def getNodeAndStepIdAssociatedWithStepNumberLinux(inMaxStep):
             
         if debug() >= utilDebugLevel():
             for aline in theLines:
-                print "LINES READ: ", aline
+                print("LINES READ: ", aline)
 
         nodeToCheck= ""
         newStep= '0'
@@ -439,8 +439,8 @@ def getNodeAndStepIdAssociatedWithStepNumberLinux(inMaxStep):
             stepIdToCheck= newStep.split(".")[0]
 
         if debug() >= utilDebugLevel():
-            print "nodeStepDic= ", nodeStepDic
-            print "stepIdToCheck= ", stepIdToCheck,
+            print("nodeStepDic= ", nodeStepDic)
+            print("stepIdToCheck= ", stepIdToCheck, end=' ')
 
         if (len(nodeStepDic) == inMaxStep ):
             break
@@ -448,7 +448,7 @@ def getNodeAndStepIdAssociatedWithStepNumberLinux(inMaxStep):
 
     #  re-set SQUEUE_FORMAT after using "squeue -s"
     #--------------------------------------------------
-    if os.environ.has_key('SQUEUE_FORMAT'):
+    if 'SQUEUE_FORMAT' in os.environ:
         os.environ['SQUEUE_FORMAT']=  oldSqueueFormatValue
 
     if nodeToCheck == '' or newStep== '':
@@ -461,7 +461,7 @@ def getNodeAndStepIdAssociatedWithStepNumberLinux(inMaxStep):
 def getNumberOfProcessorsPerNode(useNode=None):
     # Assume all nodes on this machine has the same number of processors
 
-    if os.environ.has_key('SYS_TYPE'):
+    if 'SYS_TYPE' in os.environ:
         SYS_TYPE= os.environ['SYS_TYPE']
     else:
         SYS_TYPE= ''
@@ -513,7 +513,7 @@ def getNumberOfProcessorsPerNode(useNode=None):
     except KeyboardInterrupt:
         raise
     except:
-        print "Unexpected error in getNumberOfProcsPerNode:", sys.exc_info()
+        print("Unexpected error in getNumberOfProcsPerNode:", sys.exc_info())
         return 0
 
 

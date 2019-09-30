@@ -1,4 +1,4 @@
-from cStringIO import StringIO
+from io import StringIO
 
 class AttributeDict (dict):
     """A dictionary whose items can be accessed as attributes. Be careful not to
@@ -16,7 +16,7 @@ class AttributeDict (dict):
         try:
             return self[name]
         except KeyError:
-            raise AttributeError, "No attribute %s" % name
+            raise AttributeError("No attribute %s" % name)
 
     def __setattr__(self, name, value):
         "Convert an attribute set into a key set."
@@ -27,16 +27,15 @@ class AttributeDict (dict):
         try:
             del self[name]
         except KeyError:
-            raise AttributeError, 'No attribute %s' % name
+            raise AttributeError('No attribute %s' % name)
         
     def __repr__(self):
         out = StringIO()
-        print >>out, "AttributeDict("
-        keys = self.keys()
-        keys.sort()
+        print("AttributeDict(", file=out)
+        keys = sorted(list(self.keys()))
         for key in keys:
-            print >>out, "  ", key, " = ", repr(self[key]), ","
-        print >>out, ")"
+            print("  ", key, " = ", repr(self[key]), ",", file=out)
+        print(")", file=out)
         s = out.getvalue()
         out.close()
         return s
@@ -44,12 +43,11 @@ class AttributeDict (dict):
     def __str__(self):
         "Prints the attributes in alphabetical order."
         out = StringIO()
-        keys = self.keys()
-        keys.sort()
+        keys = sorted(list(self.keys()))
         for key in keys:
             if key.startswith('_'):
                 next
-            print >>out, key, " = ", str(self[key])
+            print(key, " = ", str(self[key]), file=out)
         s = out.getvalue()
         out.close()
         return s
@@ -61,5 +59,5 @@ if __name__ == "__main__":
     d.c = 3
     assert d['c'] == 3
     del d.b
-    print d
+    print(d)
     

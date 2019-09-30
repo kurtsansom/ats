@@ -122,7 +122,7 @@ class DawnCompileMachine (machines.Machine):
         if self.envFilename is None:
             self.envFilename= test.outname + ".env"
             envHandle= open(self.envFilename, 'w')
-            for eachEnv in os.environ.keys():
+            for eachEnv in list(os.environ.keys()):
                 envStr= envStr + "setenv " + eachEnv + ' "'+ os.environ[eachEnv] + '"\n'
                 envStr= "setenv " + eachEnv + ' "'+ os.environ[eachEnv] + '"\n'
                 envHandle.write(envStr)
@@ -243,7 +243,7 @@ class DawnCompileMachine (machines.Machine):
             finErr.close()
 
         except IOError:
-            print "\ncat of log files failed for ", test.name, " -- ", str(e)
+            print("\ncat of log files failed for ", test.name, " -- ", str(e))
 
 
     def quit(self): #

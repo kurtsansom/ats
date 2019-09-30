@@ -1,5 +1,5 @@
 import os, sys
-from attributedict import AttributeDict
+from .attributedict import AttributeDict
 
 statuses = AttributeDict()
 
@@ -28,7 +28,7 @@ class _StatusCode:
     def __eq__(self, other):
         if isinstance(other, _StatusCode):
             return self.name == other.name
-        elif isinstance(other, (str, unicode)):
+        elif isinstance(other, str):
             return self.name == other or self.abr == other
         else:
             return False
@@ -98,4 +98,4 @@ def is_valid_executable (path):
     return is_valid_file(path) and os.access(path, os.X_OK)
 
 if __name__ == "__main__":
-    print locals()
+    print(locals())

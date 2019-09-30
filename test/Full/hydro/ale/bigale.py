@@ -5,5 +5,5 @@
 import sys
 if sys.argv[1:]:
     a = " ".join(sys.argv[1:])
-    print '#ATS:bigale', a
+    print('#ATS:bigale', a)
 

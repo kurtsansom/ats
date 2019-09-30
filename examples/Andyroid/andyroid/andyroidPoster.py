@@ -4,7 +4,7 @@ f = open(inputFile, 'r')
 count = 0
 for line in f:
     count += 1
-    print line,
+    print(line, end=' ')
 f.close()
-print "%d lines in file." % count
+print("%d lines in file." % count)
 

@@ -410,13 +410,13 @@ class BatchSingleMachine (BatchMachine):
         self.numberTestsRunning += 1
 
         fromTestDic= {'testNp': test.np, 'testName': test.name, 'testLevel': test.level, 'testPath':test.directory, 'testNameBase': test.namebase}
-        fromTestAndBatchDic= dict( fromTestDic.items() + test.batchDic.items() )
+        fromTestAndBatchDic= dict( list(fromTestDic.items()) + list(test.batchDic.items()) )
         summaryText= batchTemplate.summaryTemplate % fromTestAndBatchDic
         
-        print >>self.batchFp, summaryText
-        print >>self.batchFp, "# BEGIN test continuation info "
-        print >>self.batchFp, self.continuation(test)
-        print >>self.batchFp, "# END test continuation info "
+        print(summaryText, file=self.batchFp)
+        print("# BEGIN test continuation info ", file=self.batchFp)
+        print(self.continuation(test), file=self.batchFp)
+        print("# END test continuation info ", file=self.batchFp)
 
 
         
@@ -430,7 +430,7 @@ class BatchSingleMachine (BatchMachine):
         result += "executable = " + \
                   repr(test.executable.path) 
         result += ",\n   " + "clas = " + repr(test.clas)
-        for k in test.options.keys():
+        for k in list(test.options.keys()):
             if k in ["executable", "clas", "script"]:
                 continue
 

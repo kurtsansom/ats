@@ -1,13 +1,13 @@
 import os, sys, time, tempfile, traceback, socket
-import configuration, version
-from atsut import INVALID, PASSED, FAILED, SKIPPED, BATCHED, \
+from . import configuration, version
+from .atsut import INVALID, PASSED, FAILED, SKIPPED, BATCHED, \
                   RUNNING, FILTERED, CREATED, TIMEDOUT, HALTED, EXPECTED,\
                   abspath, AtsError, is_valid_file, debug, statuses, \
                   expandpath, AttributeDict
-from times import hms, datestamp, Duration, wallTime, atsStartTime, \
+from .times import hms, datestamp, Duration, wallTime, atsStartTime, \
                   atsStartTimeLong
-from tests import AtsTest
-from log import log, terminal
+from .tests import AtsTest
+from .log import log, terminal
 
 def standardIntrospection(line):
     "Standard magic detector for input."
@@ -49,7 +49,7 @@ Attributes:
 
     def restart(self):
         "Reinitialize basic data structures."
-        self.started = datestamp(long=1)
+        self.started = datestamp(int=1)
         self.collectTimeEnded = self.started
         self.filters = []
         self.testlist = []
@@ -72,13 +72,13 @@ Attributes:
             try:
                 f = str(f)
             except Exception:
-                raise AtsError, "filter must be convertible to string"
+                raise AtsError("filter must be convertible to string")
             if not f:
                 continue
             try:
                 r = eval(f, {}, {})
             except SyntaxError:
-                raise AtsError, 'Mal-formed filter, %s' % repr(f)
+                raise AtsError('Mal-formed filter, %s' % repr(f))
             except KeyboardInterrupt:
                 raise
             except Exception:
@@ -90,7 +90,7 @@ Attributes:
         """Compute the environment in which filters for test will be 
             evaluated.""" 
         if not isinstance(test, AtsTest):
-            raise AtsError, 'filterenv argument must be a test instance.'
+            raise AtsError('filterenv argument must be a test instance.')
         fe = {}
         for f in _filterwith:
             exec(f, fe)
@@ -114,7 +114,7 @@ Attributes:
                     return f
             except KeyboardInterrupt:
                 raise
-            except Exception, e:
+            except Exception as e:
                 if debug():
                     log('In filter %s:'% repr(f), e)
                 return f
@@ -129,8 +129,7 @@ Attributes:
         log("Test environment symbols:", logging=logging, echo=echo)
         log.indent()
         if not words: 
-            words = testEnvironment.keys()
-            words.sort()
+            words = sorted(list(testEnvironment.keys()))
         for key in words:
             try:
                 log(key,":", testEnvironment[key], logging=logging, echo=echo)
@@ -145,17 +144,16 @@ Attributes:
     def undefine(*args):
         "Remove one or more symbols for input files."
         for x in args:
-            if testEnvironment.has_key(x):
+            if x in testEnvironment:
                 del testEnvironment[x]
 
     def get(self, name):
         """Return the definition of name from the test environment. 
         """
-        if testEnvironment.has_key(name):
+        if name in testEnvironment:
             return testEnvironment.get(name)
 
-        raise AtsError, \
-            "Could not find name %s in vocabulary." % name   
+        raise AtsError("Could not find name %s in vocabulary." % name)   
         
     alreadysourced = []
 
@@ -191,12 +189,12 @@ Attributes:
             try:
                 f = open(t1)
                 break
-            except IOError, e:
+            except IOError as e:
                 pass
         else:
             log("Error opening input file:", t1, echo=True)
             self.badlist.append(t1)
-            raise AtsError, "Could not open input file %s" % path
+            raise AtsError("Could not open input file %s" % path)
         t = abspath(t1)
         directory, filename = os.path.split(t1)
         name, e = os.path.splitext(filename)
@@ -243,7 +241,7 @@ Attributes:
             log.indent()
             os.chdir(directory)
             try:
-                execfile(t1, testenv)
+                exec(compile(open(t1, "rb").read(), t1, 'exec'), testenv)
                 if debug(): log('Finished ', t1, datestamp())
                 result = 1
             except KeyboardInterrupt:
@@ -272,7 +270,7 @@ Attributes:
         if self.testlist:
             log("""
 =========================================================
-ATS RESULTS %s""" % datestamp(long=1), echo = True)
+ATS RESULTS %s""" % datestamp(int=1), echo = True)
             log('-------------------------------------------------',
                 echo = True)
             self.report()
@@ -280,7 +278,7 @@ ATS RESULTS %s""" % datestamp(long=1), echo = True)
                 echo = True) 
         if not configuration.options.skip:
             log("""
-ATS SUMMARY %s""" % datestamp(long=1), echo = True)
+ATS SUMMARY %s""" % datestamp(int=1), echo = True)
             self.summary(log)
             self._summary2(log)
             
@@ -290,7 +288,7 @@ ATS SUMMARY %s""" % datestamp(long=1), echo = True)
         log.echo = True
         log("ATS WALL TIME", wallTime())
         log("ATS COLLECTION END", self.collectTimeEnded)
-        log('ATS END', datestamp(long=1))
+        log('ATS END', datestamp(int=1))
         log('ATS MACHINE TYPE', configuration.MACHINE_TYPE)
         if configuration.batchmachine is not None:
             log('ATS BATCH TYPE', configuration.BATCH_TYPE)
@@ -532,7 +530,7 @@ We immediately make sure each input file exists and is readable.
                             configuration.options.allInteractive)):
             for t in batchTests:
                 log( t, "BATCH sorting error.", echo=True)
-            raise ValueError, 'batch test should not exist'
+            raise ValueError('batch test should not exist')
       
         return interactiveTests, batchTests
     
@@ -591,7 +589,7 @@ to allow user a chance to add options and examine results of option parsing.
             self.batchmachine = None 
         self.verbose = configuration.options.verbose or debug()
         log.echo = self.verbose
-        self.started = datestamp(long=1)
+        self.started = datestamp(int=1)
         self.continuationFileName = ''
         self.atsRunPath = os.getcwd()
         for a in configuration.options.filter:
@@ -643,13 +641,13 @@ to allow user a chance to add options and examine results of option parsing.
             log("ATS error while collecting tests.", echo=True)
             log(traceback.format_exc(), echo=True)
             errorOccurred = True
-            self.collectTimeEnded = datestamp(long=1)
+            self.collectTimeEnded = datestamp(int=1)
 
         except KeyboardInterrupt:
             log("Keyboard interrupt while collecting tests, terminating.", echo=True)
             errorOccurred = True
 
-        self.collectTimeEnded = datestamp(long=1)
+        self.collectTimeEnded = datestamp(int=1)
         if errorOccurred:
             return
         
@@ -714,13 +712,13 @@ to allow user a chance to add options and examine results of option parsing.
 # and batched jobs are marked SKIPPED.
         self.continuationFileName= os.path.join(log.directory, 'continue.ats')
         fc = open(self.continuationFileName, 'w')
-        print >>fc, """
+        print("""
 import ats
 testlist = ats.manager.testlist
 PASSED = ats.PASSED
 EXPECTED = ats.EXPECTED
 BATCHED = ats.BATCHED
-"""
+""", file=fc)
         
 # The goal here is to mark passed things that need not be rerun. Sometimes 
 # something passed but a child did not, which could be a fault in the parent
@@ -730,15 +728,15 @@ BATCHED = ats.BATCHED
         remaining = {}
         for t in self.testlist:
             if t not in interactiveTests:
-                print >>fc, "testlist[%d].set(SKIPPED, 'was %s') # %s" % \
-                     (t.serialNumber -1, t.status.name, t.name)
+                print("testlist[%d].set(SKIPPED, 'was %s') # %s" % \
+                     (t.serialNumber -1, t.status.name, t.name), file=fc)
             else:
                 remaining[t.serialNumber] = t
 
         while remaining:
-             sns = remaining.keys()
+             sns = list(remaining.keys())
              u = remaining[sns[0]]
-             brothers = [v for v in remaining.values() if areBrothers(u, v)]
+             brothers = [v for v in list(remaining.values()) if areBrothers(u, v)]
              for v in brothers:
                  del remaining[v.serialNumber]
              for v in brothers:
@@ -746,8 +744,8 @@ BATCHED = ats.BATCHED
                      break
              else: 
                  for v in brothers:
-                    print >>fc, "testlist[%d].set(%s, 'Previously ran.') # %s" % \
-                                 (v.serialNumber-1, v.status.name, v.name)
+                    print("testlist[%d].set(%s, 'Previously ran.') # %s" % \
+                                 (v.serialNumber-1, v.status.name, v.name), file=fc)
 
         fc.close()
 
@@ -782,7 +780,7 @@ BATCHED = ats.BATCHED
         r = AttributeDict(
             started = self.started,
             options = self.options,
-            savedTime = datestamp(long=1),
+            savedTime = datestamp(int=1),
             collectTimeEnded = self.collectTimeEnded,
             badlist = self.badlist,
             filters = self.filters,
@@ -799,11 +797,11 @@ BATCHED = ats.BATCHED
         r.verbose = self.verbose
         r.machine = AttributeDict()
         r.batchmachine = None
-        for key, value in self.machine.getResults().items():
+        for key, value in list(self.machine.getResults().items()):
             r.machine[key] = value
         if self.batchmachine:
             r.batchmachine = AttributeDict()
-            for key, value in self.batchmachine.getResults().items():
+            for key, value in list(self.batchmachine.getResults().items()):
                 r.batchmachine[key] = value
         for hook in self.onResultsRoutines:
             log('   Calling onResults function', hook.__name__, echo=True)
@@ -838,13 +836,13 @@ dependents_serial contain the serial numbers of the relevant tests.
     def printResults(self, file=sys.stdout):
         "Print state to file, formatting items with repr"
 # import * is bad style but helps with robustness with respect to ats changes:
-        print >>file, """from ats import *"""
-        print >>file, "state = ", 
-        print >>file, repr(self.getResults())
-        print >>file, "logDirectory = ", repr(log.directory)
-        print >>file, "machineName = ", repr(self.machine.name)
+        print("""from ats import *""", file=file)
+        print("state = ", end=' ', file=file) 
+        print(repr(self.getResults()), file=file)
+        print("logDirectory = ", repr(log.directory), file=file)
+        print("machineName = ", repr(self.machine.name), file=file)
 # now print the trailer
-        print >>file, """
+        print("""
 # now fix up test objects
 # First we need an object that prints like a test to avoid recursion.
 
@@ -877,7 +875,7 @@ for t in state.testlist:
    
 # clean up
 del i, t 
-"""
+""", file=file)
 
 # --------- END OF AtsManager --------------
 
@@ -926,11 +924,11 @@ def filterdefs (text=None):
             for f in _filterwith:
                 exec(f, d)
             exec(text, d)
-        except SyntaxError, e:
-            raise AtsError, e
+        except SyntaxError as e:
+            raise AtsError(e)
         except KeyboardInterrupt:
             raise
-        except Exception, e:
+        except Exception as e:
             pass
         if debug():
             log('filterdefs:')

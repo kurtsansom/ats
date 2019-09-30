@@ -49,11 +49,11 @@ class ChaosMultiMachine (machines.Machine):
         import os
         self.removeSrunStep = options.removeSrunStep
         if self.removeSrunStep == False:
-            if not os.environ.has_key('SLURM_NNODES'):
+            if 'SLURM_NNODES' not in os.environ:
                 self.removeSrunStep= True
         
         if options.numNodes==-1:
-            if os.environ.has_key('SLURM_NNODES'):
+            if 'SLURM_NNODES' in os.environ:
                 options.numNodes= int(os.environ['SLURM_NNODES'])
                
             else:
@@ -212,6 +212,6 @@ class ChaosMultiMachine (machines.Machine):
                 retcode= subprocess.call("scancel" + " -n  " + test.jobname, shell=True)
                 if retcode < 0:
                     log("---- kill() in chaosMulti.py, command= scancel -n  %s failed with return code -%d  ----" %  (test.jobname, retcode), echo=True)
-            except OSError, e:
+            except OSError as e:
                 log("---- kill() in chaosMulti.py, execution of command failed (scancel -n  %s) failed:  %s----" %  (test.jobname, e), echo=True)
 

@@ -15,7 +15,7 @@ from ats import manager
 
 def myposter(manager):
     for t in manager.testlist:
-        print t
+        print(t)
 
 def addopt (parser):
     parser.add_option('--postprocess', action='store_true', dest = 'postprocess',

@@ -22,16 +22,16 @@ if not inputFile:
     if args: 
         inputFile = args[0]
     else:
-        raise ValueError, "No input file."
+        raise ValueError("No input file.")
 
-print "Input file:", inputFile
+print("Input file:", inputFile)
 f = open(inputFile, 'r')
 
 outputFile = options.outputFile
 if not outputFile:
     outputFile = inputFile + ".out"
     outputFile = os.path.basename(outputFile)
-print "Output file", outputFile
+print("Output file", outputFile)
 g = open(outputFile, 'w')
 
 delta = 0.0
@@ -46,8 +46,8 @@ for line in f:
     if line.startswith("#"): continue
     a = float(line)
     if a > 10.0:
-        raise ValueError, "Input value %f too large." % a
-    print >>g, a, alpha*a**2 + delta
+        raise ValueError("Input value %f too large." % a)
+    print(a, alpha*a**2 + delta, file=g)
 f.close()
 g.close()
 

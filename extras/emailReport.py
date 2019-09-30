@@ -73,14 +73,14 @@ class emailResults(object):
 
                 if addressDict is not None:
                         logname = os.environ['LOGNAME']
-                        if logname in addressDict.keys():
+                        if logname in list(addressDict.keys()):
                                 self.fromEmail = addressDict[logname]
                         elif domainName:
                                 self.fromEmail = "%s@%s" % (logname, domainName)
                         else:
                                 self.fromEmail = logname
                 #       self.toEmail = ', '.join(addressDict.values())
-                        for key in addressDict.keys():
+                        for key in list(addressDict.keys()):
                                 #I'm making this change to use the email.utils COMMASPACE utility
                                 #Which appears to be required to send to multiple addresses
                                 self.toEmail.append(addressDict[key])
@@ -116,7 +116,7 @@ class emailResults(object):
                          pass
                  else:                    # Include atsb results from other runs in this report
                          if self.dbList is None:
-                                print "There are no files in the list. Use type=0 or provide a dbList when calling sendReport"
+                                print("There are no files in the list. Use type=0 or provide a dbList when calling sendReport")
                          else:
                                 self.readResultFiles(manager.testlist)
                  # General test info
@@ -168,7 +168,7 @@ class emailResults(object):
                  # If the user has defined any images that should be included in the message
                  # they are added here.
                  if self.msgImages:
-                         print "msgImages is not empty.  It contains ", self.msgImages
+                         print("msgImages is not empty.  It contains ", self.msgImages)
                          for usrImage in self.msgImages:
                                  # The following is supposed to open the image in binary mode
                                  # and lets MIMEImage guess the image type
@@ -211,7 +211,7 @@ class emailResults(object):
                                 <td>Timedout</td><td>Invalid</td><td>Filtered</td>
                                 <td>Skipped</td><td>Total</td></tr>'''
                 #for key in self.dbTestLists:
-                for key in sorted(self.dbTestLists.iterkeys()):
+                for key in sorted(self.dbTestLists.keys()):
                         #first create the status lists for the summary
                         self.createStatusLists(self.dbTestLists[key])
                         # Create a dictionary of status types and results to make formatting easier.
@@ -245,8 +245,8 @@ class emailResults(object):
                         self.dbTestLists[self.runlabel] = testlist
                         self.dbList.append(self.runlabel)
                 row = 0
-                for fn in sorted(self.dbTestLists.iterkeys()):
-                        print 'looking at %s ' % fn
+                for fn in sorted(self.dbTestLists.keys()):
+                        print('looking at %s ' % fn)
                         #see if the test is already in the master list
                         for test in self.dbTestLists[fn]:
                                 if test.name in self.mTestList:
@@ -281,7 +281,7 @@ class emailResults(object):
                 tableHeader = '<tr><td> Test Label </td>'
                 #Add the headers
                 #for key in self.dbTestLists.keys():
-                for key in sorted(self.dbTestLists.iterkeys()):
+                for key in sorted(self.dbTestLists.keys()):
                          # split out the filename to avoid putting paths in the table
                          path,filename = os.path.split(key)
                          tableHeader += '<td> %s  </td>' % filename
@@ -308,7 +308,7 @@ class emailResults(object):
                          elif statusString.count('FILT') == len(self.dbList):
                                  pass
                          elif 'FAIL' in statusString:
-                                 print "Found a failure"
+                                 print("Found a failure")
                                  tableRow = '<tr><td> %s' % t
                                  tableRow += '</td>'
                                  for i in self.mTestList[t]:
@@ -319,7 +319,7 @@ class emailResults(object):
                                #  appendRows += '</tr>'
                                  failed += 1
                          elif 'TIME' in statusString:
-                                 print "Found a Timeout"
+                                 print("Found a Timeout")
                                 # appendRows = '<tr><td> %s' % t
                                 # appendRows += '</td>'
                                  for i in self.mTestList[t]:
@@ -390,7 +390,7 @@ class emailResults(object):
                 tableBody += tableHeader
                 for t in self.failed:
                         details = {'testName': t.name, 'testScript': t.options['script']}
-                        print t
+                        print(t)
                         testDetails = '<tr><td> %(testName)s </td><td> %(testScript)s </td></tr>' % details
                         tableBody += testDetails
                 tableBody += '</table></html>'
@@ -413,7 +413,7 @@ class emailResults(object):
         def addMsgImages(self, image):
                 ''' This function will appends images to a list to be added to the body of the message
                  before sending. '''
-                print "attaching %s to the list of images" % image
+                print("attaching %s to the list of images" % image)
                 self.msgImages.append(image)
 
         def readResultFiles(self, testlist):
@@ -423,10 +423,10 @@ class emailResults(object):
                 '''
 
                 if self.dbList is None:
-                        print 'There are no result files provided'
+                        print('There are no result files provided')
                 else:
                         for file in self.dbList:
-                                print 'the file name is %s'% file 
+                                print('the file name is %s'% file) 
                                 if os.path.isfile(file):
                                 # execfile and add it's state.testlist to our self.dbTestLists
                                 # 
@@ -434,13 +434,13 @@ class emailResults(object):
                                 # to use execfile and rename the state, then appending it's testlist
                                 # to our list using the filename as it's key
                                         d = {}
-                                        execfile(file, d)
+                                        exec(compile(open(file, "rb").read(), file, 'exec'), d)
                                         state1 = d['state']
                                         self.dbTestLists[file] = state1.testlist
                                         for test in state1.testlist:
-                                                print test.name
+                                                print(test.name)
                                 else:
-                                        print "The file %s doesn't exist" % file
+                                        print("The file %s doesn't exist" % file)
                 self.masterTestList(testlist)
 
         def topPriorityResults(self, searchString):
@@ -459,13 +459,13 @@ class emailResults(object):
                                 break
                         elif searchFor in file:
                                 priorityFilename = file
-                                print 'Priority Filename is %s' % file
+                                print('Priority Filename is %s' % file)
                         else:
                                 pass
 
                 if priorityFilename != None:
                         d = {}
-                        execfile(priorityFilename,d)
+                        exec(compile(open(priorityFilename, "rb").read(), priorityFilename, 'exec'),d)
                         state = d['state']
                         testlist = state.testlist
                         failed = [test for test in testlist if (test.status is FAILED)]
@@ -473,6 +473,6 @@ class emailResults(object):
                                 msg = '<br><b>Chaos Failures </b><br>'
                                 for test in failed:
                                         msg += test.name + '<br>'
-                                        print 'appending %s' % test.name
+                                        print('appending %s' % test.name)
                 return msg
 

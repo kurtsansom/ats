@@ -5,8 +5,8 @@
 import sys
 if sys.argv[1:]:
     a = " ".join(sys.argv[1:])
-    print a
+    print(a)
 else:
-   print 'I am not feeling well.   Uhhhh....'
-   raise RuntimeError, 'Did not politely greet me, it dies.'
+   print('I am not feeling well.   Uhhhh....')
+   raise RuntimeError('Did not politely greet me, it dies.')
 

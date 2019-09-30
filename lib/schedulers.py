@@ -1,10 +1,10 @@
 """Defines standard scheduler for interactive jobs."""
 import sys, time
-from log import AtsLog, log, terminal
-from atsut import AttributeDict
+from .log import AtsLog, log, terminal
+from .atsut import AttributeDict
 from itertools import chain
 
-from atsut import debug, RUNNING, TIMEDOUT, PASSED, FAILED, \
+from .atsut import debug, RUNNING, TIMEDOUT, PASSED, FAILED, \
      CREATED, SKIPPED, HALTED, EXPECTED, statuses, AtsError
 
 def comparePriorities (t1, t2): 
@@ -23,7 +23,7 @@ class StandardScheduler (object):
         """Initialize scheduler with a list of interactive tests to run from manager """
 # have to delay looking at the machine / configuration to avoid import race
         global machine, configuration
-        import configuration
+        from . import configuration
         machine = configuration.machine
 #
         self.blocking = []

@@ -9,13 +9,13 @@ The log object is created by importing log, but it can't write to a file
 until we process the options and get the desired properties.
 """
 import os, sys, socket
-import version, atsut
+from . import version, atsut
 from optparse import OptionParser
-from atsut import debug, AttributeDict, abspath
-from log import log, terminal
-from times import atsStartTime, Duration
-import machines
-import executables
+from .atsut import debug, AttributeDict, abspath
+from .log import log, terminal
+from .times import atsStartTime, Duration
+from . import machines
+from . import executables
 
 SYS_TYPE = os.environ.get('SYS_TYPE', sys.platform)
 config_directory = os.path.abspath(__file__)
@@ -127,8 +127,7 @@ def documentConfiguration():
      log('ATS version:', version.version)
      log('Options:')
      log.indent()
-     olist = options.keys()
-     olist.sort()
+     olist = sorted(list(options.keys()))
      for k in olist:
          log(k + ":", repr(getattr(options, k)))
      log.dedent()
@@ -212,7 +211,7 @@ def init(clas = '', adder = None, examiner=None):
 # immediately make the options a real dictionary -- the way optparse leaves it
 # is misleading.
     options = AttributeDict()
-    for k in vars(toptions).keys():
+    for k in list(vars(toptions).keys()):
         options[k] = getattr(toptions, k)
     
 # let the machine(s) modify the results or act upon them in other ways.
@@ -247,7 +246,7 @@ def init(clas = '', adder = None, examiner=None):
     defaultExecutable = executables.Executable(abspath(options.executable))
     # ATSROOT is used in tests.py to allow paths pointed at the executable's directory
     commandList = machine.split(repr(defaultExecutable))
-    if os.environ.has_key('ATSROOT'):
+    if 'ATSROOT' in os.environ:
         ATSROOT = os.environ['ATSROOT']
     else:
         ATSROOT = os.path.dirname(defaultExecutable.path)

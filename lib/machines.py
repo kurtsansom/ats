@@ -1,10 +1,10 @@
 """Definition of class Machine for overriding. 
 """
 import subprocess, sys, os, time, shlex
-from atsut import debug, RUNNING, TIMEDOUT, PASSED, FAILED, \
+from .atsut import debug, RUNNING, TIMEDOUT, PASSED, FAILED, \
      CREATED, SKIPPED, HALTED, EXPECTED, statuses, AttributeDict, AtsError
-import configuration
-from log import log, terminal, AtsLog
+from . import configuration
+from .log import log, terminal, AtsLog
 
 def comparePriorities (t1, t2): 
     "Input is two tests; return comparison based on totalPriority."
@@ -65,7 +65,7 @@ class MachineCore(object):
              else:   # test has finished
                  if test.status is not PASSED:
                      if configuration.options.oneFailure:
-                         raise AtsError, "Test failed in oneFailure mode."
+                         raise AtsError("Test failed in oneFailure mode.")
         self.running = stillRunning
 
     def remainingCapacity(self):
@@ -164,7 +164,7 @@ The subprocess part of launch. Also the part that might fail.
             self.running.append(test)
             self.numberTestsRunning += 1
             return True
-        except OSError, e:
+        except OSError as e:
             test.outhandle.close()
             test.errhandle.close()
             test.set(FAILED, str(e))
@@ -204,7 +204,7 @@ is hard upper limit.
         self.naptime = 0.2 #number of seconds to sleep between checks on running tests.
         self.running = []
         self.runOrder = 0
-        import schedulers
+        from . import schedulers
         self.scheduler = schedulers.StandardScheduler()
         self.init()
 

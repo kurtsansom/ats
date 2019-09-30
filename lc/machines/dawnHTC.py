@@ -136,24 +136,24 @@ class DawnHTCMachine (machines.Machine):
 
         import os, getpass
         #-------------------------------------------------------------- 
-        if not os.environ.has_key('USER'):
+        if 'USER' not in os.environ:
             envUser= '-env USER=' + getpass.getuser()
         else:
             envUser= '-env USER='+ os.environ['USER']
 
-        if not os.environ.has_key('LOGNAME'):
+        if 'LOGNAME' not in os.environ:
             envUser=  envUser + ' -env LOGNAME=.'
         else:
             envUser=  envUser + ' -env LOGNAME='+ os.environ['LOGNAME']
         #-------------------------------------------------------------- 
         envPwd=  ' -env PWD=' + test.directory
         #-------------------------------------------------------------- 
-        if not os.environ.has_key('HOME'):
+        if 'HOME' not in os.environ:
             envHome= '-env HOME=.'
         else:
             envHome= '-env HOME='+ os.environ['HOME']
             
-            if not os.environ.has_key('PATH'):
+            if 'PATH' not in os.environ:
                 envHome= envHome + ' -env PATH=.'
             else:
                 allPaths= os.environ['PATH']
@@ -342,7 +342,7 @@ class DawnHTCMachine (machines.Machine):
             self.running.append(test)
 
             return True
-        except OSError, e:
+        except OSError as e:
             test.outhandle.close()
             test.errhandle.close()
             test.set(FAILED, str(e))
@@ -427,7 +427,7 @@ class DawnHTCMachine (machines.Machine):
                     retcode= subprocess.call("scancel" + " -n  " + test.jobname, shell=True)
                     if retcode < 0:
                         log("---- kill() in dawnHTC.py, command= scancel -n  %s failed with return code -%d  ----" %  (test.jobname, retcode), echo=True)
-            except OSError, e:
+            except OSError as e:
                 log("---- kill() in dawnHTC.py, execution of command failed (scancel -n  %s) failed:  %s----" %  (test.jobname, e), echo=True)
 
 

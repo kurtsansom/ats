@@ -33,7 +33,7 @@ class AtsBatchTest (unittest.TestCase):
         ats.manager.test('foo.py')
         test = ats.manager.testlist[0]
         # will submit a batch job
-        self.failUnless(test.options.has_key('batch'))
+        self.assertTrue('batch' in test.options)
         self.assertEqual(test.options['batch'], 1)
 
         # ats batch option is on, but this test problem is not for batch run
@@ -42,7 +42,7 @@ class AtsBatchTest (unittest.TestCase):
         # batch is not submitted
         ats.manager.test('goo.py')
         test = ats.manager.testlist[1]
-        self.failIf(test.options.has_key('batch'))
+        self.assertFalse('batch' in test.options)
         self.assertEqual(test.options.get('batch',-1), -1)
 
         # ats batch option is not on, test problem is for batch run

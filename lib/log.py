@@ -1,5 +1,5 @@
 import sys, os
-from atsut import abspath, AtsError, debug
+from .atsut import abspath, AtsError, debug
 
 class AtsLog (object):
     "Log and stderr echo facility"
@@ -50,15 +50,15 @@ class AtsLog (object):
             d = self._open(self.name, self.mode)
             self.mode = 'a'
             for line in linelist:
-                print >>d, indentation + line,
-            print >>d
+                print(indentation + line, end=' ', file=d)
+            print(file=d)
             d.close()
 
         if echo:
             d = sys.stderr
             for line in linelist:
-                 print >>d, indentation + line,
-            print >>d
+                 print(indentation + line, end=' ', file=d)
+            print(file=d)
 
     def write (self, *items, **kw):
         "Write one line, like a print. Keywords echo and logging."
@@ -68,12 +68,12 @@ class AtsLog (object):
         if logging:
             d = self._open(self.name, self.mode)
             self.mode = 'a'
-            print >>d, content
+            print(content, file=d)
             d.close()
 
         if echo:
             d = sys.stderr
-            print >>d, content
+            print(content, file=d)
 
     __call__ = write
 
@@ -92,15 +92,15 @@ class AtsLog (object):
         try:
             self('Fatal error:', msg, echo=True)
         except Exception:
-            print >>sys.stderr, msg
-        raise SystemExit, 1
+            print(msg, file=sys.stderr)
+        raise SystemExit(1)
                 
 log = AtsLog(name="ats.log") 
 terminal = AtsLog(echo=True, logging=False)
 
 if __name__ == "__main__":
     log = AtsLog(logging=True, directory='test.logs')
-    print log.directory, log.name, log.shortname
+    print(log.directory, log.name, log.shortname)
     log('a','b','c')
     log.indent()
     log('this should be indented')

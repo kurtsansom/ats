@@ -12,19 +12,19 @@
 import sys, os, time
 if sys.argv[1:]:
     a = " ".join(sys.argv[1:])
-    print a
+    print(a)
     if sys.argv[1].startswith('timeout'):
         i = 0
-        w = range(1000000)
-        while 1:
+        w = list(range(1000000))
+        while True:
             for j in range(len(w)):
                 if j == i: 
                     i += 1
                     break
-            print os.times()[0:2], i
+            print(os.times()[0:2], i)
             time.sleep(2)
-    print "#ATS:Times:", sys.argv[1], os.times()[0:2]
+    print("#ATS:Times:", sys.argv[1], os.times()[0:2])
 else:
-   print 'I am not feeling well.   Uhhhh....'
-   raise RuntimeError, 'Did not politely greet me, it dies.'
+   print('I am not feeling well.   Uhhhh....')
+   raise RuntimeError('Did not politely greet me, it dies.')
 

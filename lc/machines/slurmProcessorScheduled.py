@@ -18,10 +18,10 @@ class SlurmProcessorScheduled (machines.Machine):
         
         self.runWithSalloc= True
 
-        if "SLURM_NNODES" in os.environ.keys():
+        if "SLURM_NNODES" in list(os.environ.keys()):
             self.numNodes= int(os.getenv("SLURM_NNODES"))
             self.npMax= int(os.getenv("SLURM_TASKS_PER_NODE", "1").split("(")[0])
-        elif "SLURM_JOB_NUM_NODES" in os.environ.keys():
+        elif "SLURM_JOB_NUM_NODES" in list(os.environ.keys()):
             self.numNodes= int(os.getenv("SLURM_JOB_NUM_NODES"))
             self.npMax= int(os.getenv("SLURM_JOB_CPUS_PER_NODE", "1").split("(")[0])
         else:
@@ -173,6 +173,6 @@ class SlurmProcessorScheduled (machines.Machine):
                 retcode= subprocess.call("scancel" + " -n  " + test.jobname, shell=True)
                 if retcode < 0:
                     log("---- kill() in slurmProcessorScheduled.py, command= scancel -n  %s failed with return code -%d  ----" %  (test.jobname, retcode), echo=True)
-            except OSError, e:
+            except OSError as e:
                 log("---- kill() in slurmProcessorScheduled.py, execution of command failed (scancel -n  %s) failed:  %s----" %  (test.jobname, e), echo=True)
 

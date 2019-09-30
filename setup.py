@@ -1,6 +1,7 @@
 import sys, os, shutil, glob
 from distutils.core import setup
-execfile(os.path.join('Lib', 'version.py'))
+exec(compile(open(os.path.join('lib', 'version.py'),"rb").read(),
+                  os.path.join('lib', 'version.py'), 'exec'))
 codename = 'ats'
 #
 # write atsb script
@@ -19,7 +20,7 @@ except ImportError:
 result = ats.manager.main()
 sys.exit(result)
 """ % sys.exec_prefix
-print >>f, driverscript
+print(driverscript, file=f)
 f.close()
 #os.chmod(codename, 7*64 + 7*8 + 5)
 if os.path.exists('build'):
@@ -32,9 +33,9 @@ setup (name = "ats",
        version=version,
        description = "Automated Testing System",
        packages = ['ats'],
-       package_dir = {'ats': 'Lib'},
+       package_dir = {'ats': 'lib'},
        scripts = [codename],
-       data_files = [('atsMachines', glob.glob('Machines/*.py')), ('atsExtras', glob.glob('Extras/*.py'))]
+       data_files = [('atsMachines', glob.glob('machines/*.py')), ('atsExtras', glob.glob('extras/*.py'))]
 
       )
 

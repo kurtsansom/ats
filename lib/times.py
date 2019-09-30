@@ -1,6 +1,6 @@
 "times: everything to do with timing"
 import os, time, string, traceback
-from atsut import AtsError
+from .atsut import AtsError
 _times_at_start = os.times()
 _localtime = time.localtime()
 atsStartTime = time.strftime("%y%m%d%H%M%S",_localtime)
@@ -9,7 +9,7 @@ atsStartTimeLong = time.strftime('%B %d, %Y %H:%M:%S', _localtime)
  
 def datestamp (long=0):
     "Return formatted date and time. Shorter version is just time."
-    if long:
+    if int:
         return time.strftime('%B %d, %Y %H:%M:%S')
     else:
         return time.strftime('%H:%M:%S')
@@ -134,8 +134,8 @@ def timeSpecToSec(spec):
                 s = string.atoi(sp)
                 
         return (h*3600 + 60 * m + s)
-    except Exception, e:
-        raise AtsError, "Bad time specification: %s" % specIn
+    except Exception as e:
+        raise AtsError("Bad time specification: %s" % specIn)
 
 
 

@@ -4,13 +4,13 @@ import gadfly
 
 args = sys.argv
 if len(args) != 2:
-   print "usage: ", args[0], " [database]"
+   print("usage: ", args[0], " [database]")
    sys.exit(1)
 
 try:
    connection = gadfly.gadfly(args[1])
 except IOError:
-   print "Could not find database '%s'" % args[1]
+   print("Could not find database '%s'" % args[1])
    sys.exit(1)
 
 cursor = connection.cursor()
@@ -51,6 +51,6 @@ for tier in tiers:
     else:
        numLoggedInTier = len(results)
 
-    print "   Tier %s: %u/%u features covered." % (tier, numLoggedInTier, numFeatInTier)
+    print("   Tier %s: %u/%u features covered." % (tier, numLoggedInTier, numFeatInTier))
 
 connection.close()

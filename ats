@@ -1,4 +1,4 @@
-#!/g/g19/atsusr/nightlyTests/local/bin/python
+#!/usr/bin/python
 import sys
 
 try:

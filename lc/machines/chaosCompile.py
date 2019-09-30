@@ -195,7 +195,7 @@ class ChaosCompileMachine (ChaosMultiMachine):
             finErr.close()
 
         except IOError:
-            print "\ncat of log files failed for ", test.name, " -- ", str(e)
+            print("\ncat of log files failed for ", test.name, " -- ", str(e))
 
 
     def quit(self): #

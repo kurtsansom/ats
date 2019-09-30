@@ -1,12 +1,12 @@
 import os, sys, time, re
-import configuration 
-from log import log
-from atsut import INVALID, PASSED, FAILED, SKIPPED, BATCHED, RUNNING,\
+from . import configuration 
+from .log import log
+from .atsut import INVALID, PASSED, FAILED, SKIPPED, BATCHED, RUNNING,\
                   CREATED, FILTERED, TIMEDOUT, HALTED, EXPECTED, statuses, \
                   is_valid_file, debug, AtsError, abspath, AttributeDict
 
-from times import hms, datestamp, curDateTime, Duration
-from executables import Executable
+from .times import hms, datestamp, curDateTime, Duration
+from .executables import Executable
 
 class AtsTestGroup (list):
     "A group of tests."
@@ -137,7 +137,7 @@ class AtsTest (object):
             self.options.update(AtsTest.stuck)
             self.options.update(AtsTest.grouped)
             self.options.update(options)
-        except Exception, e:
+        except Exception as e:
             self.set(INVALID, 'Bad options: ' + e)
             return
         
@@ -250,7 +250,7 @@ class AtsTest (object):
                 self.timelimit = configuration.timelimit
             else:
                 self.timelimit = Duration(tl)             
-        except AtsError, msg:
+        except AtsError as msg:
             self.set(INVALID, msg)
             return
 
@@ -355,7 +355,7 @@ class AtsTest (object):
     def __repr__(self):
         return "Test #%d %s %s" %(self.serialNumber, self.name, self.status)
 
-    def __nonzero__ (self):
+    def __bool__ (self):
         "It is not proper to test the truth of a test."
         self.set(FAILED, 'if test(...) not allowed.')
         log(self, echo=True)
@@ -376,7 +376,7 @@ class AtsTest (object):
         try:
             e = self.endTime
             s = self.startTime
-        except AttributeError, foo:
+        except AttributeError as foo:
             return hms(0)
         return hms(e-s)
 
@@ -433,7 +433,7 @@ class AtsTest (object):
         "Remove the named sticky options. With no arg, remove all."
         if kw:
             for k in kw:
-                if cls.stuck.has_key(k): del cls.stuck[k]
+                if k in cls.stuck: del cls.stuck[k]
         else:
             cls.stuck.clear()
     unstick = classmethod(unstick)
@@ -449,7 +449,7 @@ class AtsTest (object):
         "Remove the named tacked options"
         if kw:
             for k in kw:
-                if cls.tacked.has_key(k): del cls.tacked[k]
+                if k in cls.tacked: del cls.tacked[k]
         else:
             cls.tacked.clear()
     untack = classmethod(untack)
@@ -465,7 +465,7 @@ class AtsTest (object):
         "Remove the named glued options"
         if kw:
             for k in kw:
-                if cls.glued.has_key(k): del cls.glued[k]
+                if k in cls.glued: del cls.glued[k]
         else:
             cls.glued.clear()
     unglue = classmethod(unglue)
@@ -476,7 +476,7 @@ class AtsTest (object):
         """
         if kw:
             for k in kw:
-                if cls.glued.has_key(k): 
+                if k in cls.glued: 
                     return cls.glued[k]
                 else:
                     return None
@@ -540,7 +540,7 @@ class AtsTest (object):
         
         try:
             f = open(self.outname, 'r')
-        except IOError, e:
+        except IOError as e:
             self.notes = ['Missing output file.']
             log('Missing output file', self.outname, e)
             return

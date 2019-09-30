@@ -32,7 +32,7 @@ class LogTest(unittest.TestCase):
     def testLogCreation (self):
         "Test basic log creation."
         name = log.name
-        self.failUnless(os.path.isabs(name))
+        self.assertTrue(os.path.isabs(name))
         self.assertEqual(log.directory, os.getcwd())
         self.assertEqual(log.shortname, 'ats.log')
 
@@ -92,15 +92,15 @@ class MachineTest(unittest.TestCase):
         else:
             t=test(script, clas=clas, np=1)
         m = configuration.machine
-        self.failUnless(m.canRun(t) == '')
-        self.failUnless(m.canRunNow(t))
+        self.assertTrue(m.canRun(t) == '')
+        self.assertTrue(m.canRunNow(t))
         m.load([t])
-        print t.status
+        print(t.status)
         count = 0
         while count < 100:
             count+= 1
             result = m.step()
-            print count, result
+            print(count, result)
 
 
 class ManagerTest(unittest.TestCase):
@@ -133,14 +133,14 @@ class ManagerTest(unittest.TestCase):
         unstick()
         t = test('nofilenamedthis.py')
         self.assertEqual(len(manager.testlist), 1)
-        self.failUnless(t.status is INVALID)
+        self.assertTrue(t.status is INVALID)
         t = test(executable=sys.executable) # known to exist
         self.assertEqual(t.status, CREATED)
-        self.failUnless(t.options.has_key('level'))
+        self.assertTrue('level' in t.options)
         t = test(sys.executable, executable=1, level=20)
         self.assertEqual(t.options['level'], 20)
         t2 = testif(t, sys.executable, executable=1, level=10)
-        self.failUnless(t2.options['level'] >= t.options['level'])
+        self.assertTrue(t2.options['level'] >= t.options['level'])
 
     def testSticky (self):
         "Test setting of 'sticky/glue' options"        
@@ -148,11 +148,11 @@ class ManagerTest(unittest.TestCase):
         glue(broomstick=12)
         stick(x = 7, y = 8)
         t = test('foo.py')
-        self.failUnless(t.options.has_key('permanent'))
-        self.failUnless(t.options.has_key('broomstick'))
-        self.failUnless(t.options.has_key('x'))
-        self.failUnless(t.options.has_key('y'))
-        self.failUnless(t.options.has_key('np'))
+        self.assertTrue('permanent' in t.options)
+        self.assertTrue('broomstick' in t.options)
+        self.assertTrue('x' in t.options)
+        self.assertTrue('y' in t.options)
+        self.assertTrue('np' in t.options)
         self.assertEqual(t.options['permanent'], 3)
         self.assertEqual(t.options['broomstick'], 12)
         self.assertEqual(t.options['np'], 0)
@@ -175,30 +175,30 @@ class ManagerTest(unittest.TestCase):
     def testSYSTEMfilter (self):
         "Test that the SYSTEM filter works"
         t = test (SYSTEMS=['Hal', 'Ficus2000']) 
-        self.failUnless(t.status is FILTERED)
+        self.assertTrue(t.status is FILTERED)
 
     def testStickyAdvanced (self):
         "Harder test of setting of 'sticky/glue' options"        
         glue(permanent=3)
         stick(permanent=4)
         t = test('foo.py')
-        self.failUnless(t.options.has_key('permanent'))
+        self.assertTrue('permanent' in t.options)
         self.assertEqual(t.options['permanent'], 4)
 
         t = test('goo.py', y = 9, z = 6, permanent = 9)
-        self.failUnless(t.options.has_key('permanent'))
+        self.assertTrue('permanent' in t.options)
         self.assertEqual(t.options['permanent'], 9)
 
         unstick('permanent')
         t = test('goo.py')
-        self.failUnless(t.options.has_key('permanent'))
+        self.assertTrue('permanent' in t.options)
         self.assertEqual(t.options['permanent'], 3)
 
 
     def testOptionsEnvironment (self):
         "Test the basic set up of the testing environment."
         t = test('foo.py')
-        self.failUnless('np' in t.options)
+        self.assertTrue('np' in t.options)
         self.assertEqual(t.options['np'], 0)
 
     def testFilterEnvironment (self):
@@ -206,18 +206,18 @@ class ManagerTest(unittest.TestCase):
         t = test('foo.py')
         fe = manager.filterenv(t)
         for k in testEnvironment:
-            self.failUnless(k in fe)
+            self.assertTrue(k in fe)
             self.assertEqual(testEnvironment[k], fe[k])
 
     def testBasicFiltering (self):
         "Test simple filters."
         t = test('foo.py', np=8, delta=3, level=10)
         self.assertRaises(ats.AtsError, filter, 'np=9')
-        filter('np==8')
+        list(filter('np==8'))
         f = manager.find_unmatched(t)
         self.assertEqual(f, '')
         d = 'delta==2'
-        filter(d)
+        list(filter(d))
         f = manager.find_unmatched(t)
         self.assertEqual(f, d)
         manager.filter()
@@ -232,18 +232,18 @@ class ManagerTest(unittest.TestCase):
 
     def testTimelimitFiltering (self):
         "Test filtering of time limits."
-        filter()
+        list(filter())
         t = test('foo.py', timelimit='1h10m')
         d = "timelimit < '1h'"
-        filter(d)
+        list(filter(d))
         f = manager.find_unmatched(t)
         self.assertEqual(f, d)
 
     def testDefFiltering (self):
         "Test that filterdefs works."
-        filter()
+        list(filter())
         filterdefs('delta=4')
-        filter('delta == 3')
+        list(filter('delta == 3'))
         t = test('foo.py', np=8, delta=3)
         f = manager.find_unmatched(t)
         self.assertEqual(f, '')
@@ -279,14 +279,14 @@ class TestTimes(unittest.TestCase):
         "Test comparison operations on Durations."
         d = times.Duration('70s')
         c = times.Duration('1m15s')
-        self.failUnless(d < c)
-        self.failUnless(d < 80)
-        self.failUnless(d == d)
-        self.failUnless(d != c)
-        self.failUnless(d <= c)
-        self.failUnless(c >= d)
-        self.failIf(d != d)
-        self.failUnless(c < '1h')
+        self.assertTrue(d < c)
+        self.assertTrue(d < 80)
+        self.assertTrue(d == d)
+        self.assertTrue(d != c)
+        self.assertTrue(d <= c)
+        self.assertTrue(c >= d)
+        self.assertFalse(d != d)
+        self.assertTrue(c < '1h')
 
 if __name__ == "__main__":
     unittest.main()

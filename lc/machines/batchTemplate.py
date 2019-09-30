@@ -208,7 +208,7 @@ def submitBatchScript(scriptName):
     resultFlag= False
     
     command= "msub " + scriptName
-    print "command= ", command
+    print("command= ", command)
     p= os.popen(command)
     output= p.read()
     status= p.close()
@@ -245,7 +245,7 @@ def batchLogSummary(fileToWrite, outputList):
     fp = open(fileToWrite,"w")
     #print >>fp, "Created Batch Info File"
     for line in outputList:
-        print >>fp, line
+        print(line, file=fp)
     fp.close()
 
 
@@ -305,7 +305,7 @@ def summaryBatchStatistics(submittedJobList,badBatchJobList):
     for jobDict in submittedJobList:
         if firstTime:
             firstTime = 0
-            msg = "Summary of Executed Problems %s"%datestamp(long=1)
+            msg = "Summary of Executed Problems %s"%datestamp(int=1)
             output.append(msg)
             output.append(separator)
         output = output + writeSummaryBatchJob(jobDict,longestG)
@@ -315,7 +315,7 @@ def summaryBatchStatistics(submittedJobList,badBatchJobList):
     for jobDict in badBatchJobList:
         if firstTime:
             firstTime = 0
-            msg = "Summary of Rejected Problems %s"%datestamp(long=1)
+            msg = "Summary of Rejected Problems %s"%datestamp(int=1)
             output.append(msg)
             output.append(separator)
         output = output + writeSummaryBatchJob(jobDict,longestB)

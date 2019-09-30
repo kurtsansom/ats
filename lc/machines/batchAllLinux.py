@@ -48,13 +48,13 @@ class BatchAllMachine (BatchMachine):
         fc = open(self.batchAtsFilename, 'w')
         for t in testlist:
             t.batchDic = {}
-            print >> fc, "# Write test "
-            print >> fc, self.continuation(t)
+            print("# Write test ", file=fc)
+            print(self.continuation(t), file=fc)
             for d in t.dependents: 
                 if d in testlist:
                     continue
-                print >> fc, "# Write dependents.. "
-                print >> fc, self.continuation(d)
+                print("# Write dependents.. ", file=fc)
+                print(self.continuation(d), file=fc)
                 np= max(self.npMax, d.np)
                 d.submitted= True     # change the status 
 
@@ -66,9 +66,9 @@ class BatchAllMachine (BatchMachine):
         theCommand= finalArgs + " " + batchFilename
         # Add env info
         envCommand= ""
-        if os.environ.has_key('MACHINE_TYPE'):
+        if 'MACHINE_TYPE' in os.environ:
            envCommand += "setenv MACHINE_TYPE " +  os.environ['MACHINE_TYPE'] 
-        if os.environ.has_key('BATCH_TYPE'):
+        if 'BATCH_TYPE' in os.environ:
            envCommand += "; setenv BATCH_TYPE " +  os.environ['BATCH_TYPE'] 
         theCommand=  envCommand + " ; " + theCommand
 
@@ -164,7 +164,7 @@ class BatchAllMachine (BatchMachine):
         result += "executable = " + \
                   repr(test.executable.path) 
         #result += ",\n   " + "clas = " + repr(test.clas)
-        for k in test.options.keys():
+        for k in list(test.options.keys()):
             #if k in ["executable", "script", "clas"]:
             #if k in ["executable", "clas"]:
             if k in ["executable"]:

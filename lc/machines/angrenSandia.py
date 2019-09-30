@@ -83,7 +83,7 @@ class AngrenSandiaMachine (machines.Machine):
 
             fp.close()
 
-        except Exception, error:
+        except Exception as error:
             ats.log(str(error), verbose=1)
             fp.close()
             log("ATS error: Error with parsing node file %s"% nodeListFn, echo=True)
@@ -135,7 +135,7 @@ class AngrenSandiaMachine (machines.Machine):
         if r: numberOfNodesNeeded += 1
         test.nodes= numberOfNodesNeeded
         
-        nodesAvailable= [ anode for anode in self.mapNodeName_ProcsUsed.keys() if self.mapNodeName_ProcsUsed[anode] == 0 ]
+        nodesAvailable= [ anode for anode in list(self.mapNodeName_ProcsUsed.keys()) if self.mapNodeName_ProcsUsed[anode] == 0 ]
         if len(nodesAvailable) <= 0:
             return False
         

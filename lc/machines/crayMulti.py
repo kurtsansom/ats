@@ -48,7 +48,7 @@ class CrayMachine (machines.Machine):
         
         if options.numNodes==-1:
             import os
-            if os.environ.has_key('PBS_ENVIRONMENT'):
+            if 'PBS_ENVIRONMENT' in os.environ:
                 options.numNodes= int(os.environ['PBS_NUM_NODES'])
             else:
                 options.numNodes= 1

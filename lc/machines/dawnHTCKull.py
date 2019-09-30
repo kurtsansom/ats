@@ -23,15 +23,15 @@ class DawnHTCKullMachine (DawnHTCMachine):
                  
     def forkServerSetup (self): 
         import tempfile
-        if not os.environ.has_key('FORKSERVERDIR'):
+        if 'FORKSERVERDIR' not in os.environ:
             forkCommand= "/usr/gapps/coop/forkserver/bin/forkserver.py"
             try:
                 outHandle= tempfile.NamedTemporaryFile('w')
                 errHandle=  tempfile.NamedTemporaryFile('w')
                 self.forkSubprocess= subprocess.Popen(forkCommand, shell=True, stdout=outHandle, stderr=errHandle)
-            except OSError, e:
+            except OSError as e:
                 #print "error in running forkserver .."
-                print "Error in running the forkserver. ", sys.exc_info()[0]
+                print("Error in running the forkserver. ", sys.exc_info()[0])
                 outHandle.close()
                 errHandle.close()
 
@@ -103,12 +103,12 @@ class DawnHTCKullMachine (DawnHTCMachine):
 
     def createMoreEnvPart(self, test):
 
-        if not os.environ.has_key('KULL_TESTDATA'):
+        if 'KULL_TESTDATA' not in os.environ:
             envTestData= '-env KULL_TESTDATA=.'
         else:
             envTestData= '-env KULL_TESTDATA=' + os.environ['KULL_TESTDATA']
         #-------------------------------------------------------------- 
-        if not os.environ.has_key('FORKSERVERDIR'):
+        if 'FORKSERVERDIR' not in os.environ:
             envExtra= '-env FORKSERVERDIR=.'
         else:
             envExtra= '-env FORKSERVERDIR=' + os.environ['FORKSERVERDIR']
@@ -120,7 +120,7 @@ class DawnHTCKullMachine (DawnHTCMachine):
         envPythonPath= '-env PYTHONPATH=' + buildDir + '/lib:' + self.libDir + "/lib "
 
         ldOldPath= '.'
-        if os.environ.has_key('LD_LIBRARY_PATH'):
+        if 'LD_LIBRARY_PATH' in os.environ:
             ldOldPath= os.environ['LD_LIBRARY_PATH']   # expand this because submit will expand before checking the line length.
         
         envLdLibraryPathMustHave= '-env  LD_LIBRARY_PATH=/opt/ibmcmp/lib/bg/bglib:' + \

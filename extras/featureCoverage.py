@@ -9,7 +9,7 @@ try:
     import gadfly
 except ImportError:
     print ("Gadfly database is not installed, feature coverage disabled.")
-    raise SystemExit, 1
+    raise SystemExit(1)
 
 class resultsDatabase (object):
     "Provides a database interface to SnakeSQL.  Used for storing results from an ats run into a database."
@@ -21,7 +21,7 @@ class resultsDatabase (object):
         from ats.configuration import SYS_TYPE
 
         if dbpath == None:
-            print "No database name supplied."
+            print("No database name supplied.")
             sys.exit(1)
 
         self.__dbname = dbname
@@ -34,7 +34,7 @@ class resultsDatabase (object):
 
         try:
             self.__connection = gadfly.gadfly(self.__dbname, self.__dbpath)
-            print "Selected database '%s'" % (self.__dbpath)
+            print("Selected database '%s'" % (self.__dbpath))
             self.__usingExistingDatabase = True;
 
         #If no database supplied, create one.
@@ -74,7 +74,7 @@ class resultsDatabase (object):
                             mesh varchar)")
 
             self.__connection.commit()
-            print "Database " + self.__dbpath + " created."
+            print("Database " + self.__dbpath + " created.")
             self.__usingExistingDatabase = False
 
         self.__connectionOpen = True
@@ -87,7 +87,7 @@ class resultsDatabase (object):
 
         try:
             file = open(featureList)
-            print "Reading in '%s'..." % featureList
+            print("Reading in '%s'..." % featureList)
         except IOError:
             return
  
@@ -109,8 +109,8 @@ class resultsDatabase (object):
                         if line[6:].startswith('tier='):
                             tier=line[11:-1]
                         else:
-                            print "Unsupported variable in stick."
-                            print "Valid syntax is stick(tier=X)"
+                            print("Unsupported variable in stick.")
+                            print("Valid syntax is stick(tier=X)")
                     #Skip comments
                     elif line.startswith('#'):
                         continue
@@ -128,10 +128,10 @@ class resultsDatabase (object):
                                     % (line, mesh, tier)
                                 try:
                                     cursor.execute(sql)
-                                except store.StorageError, e:
-                                    print "Couldn't import feature: " + line + " into database's feature list."
-                                    print "Verify no duplicate entries in the master feature list."
-                                    print "SQL Error was: ", e
+                                except store.StorageError as e:
+                                    print("Couldn't import feature: " + line + " into database's feature list.")
+                                    print("Verify no duplicate entries in the master feature list.")
+                                    print("SQL Error was: ", e)
                                     sys.exit(1)
                         else:
                             if line.endswith("<polygonal>"):
@@ -148,15 +148,15 @@ class resultsDatabase (object):
                                % (line, mesh, tier)
                             try:
                                 cursor.execute(sql)
-                            except store.StorageError, e:
-                                print "Couldn't import feature: " + line + " into database's feature list."
-                                print "Verify no duplicate entries in the master feature list."
-                                print "SQL Error was: ", e
+                            except store.StorageError as e:
+                                print("Couldn't import feature: " + line + " into database's feature list.")
+                                print("Verify no duplicate entries in the master feature list.")
+                                print("SQL Error was: ", e)
                                 sys.exit(1)
             
             self.__connection.commit()
         else:
-            print "No database connection exists."
+            print("No database connection exists.")
 
     "Inserts a test entry into the database"
     def insert(self, test):
@@ -230,11 +230,11 @@ class resultsDatabase (object):
     def close(self):
         if self.__connectionOpen == True:
             if len(self.errors) != 0:
-                print "-------------------------------------------------"
-                print "Database errors"
-                print "-------------------------------------------------"
+                print("-------------------------------------------------")
+                print("Database errors")
+                print("-------------------------------------------------")
                 for entry in self.errors:
-                    print entry
+                    print(entry)
             self.__connection.close()
             self.__connection = False
 

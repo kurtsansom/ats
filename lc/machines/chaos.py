@@ -74,6 +74,6 @@ class ChaosMachine (machines.Machine):
                 retcode= subprocess.call("scancel" + " -n  " + test.jobname, shell=True)
                 if retcode < 0:
                     log("---- kill() in chaos.py, command= scancel -n  %s failed with return code -%d  ----" %  (test.jobname, retcode), echo=True)
-            except OSError, e:
+            except OSError as e:
                 log("---- kill() in chaos.py, execution of command failed (scancel -n  %s) failed:  %s----" %  (test.jobname, e), echo=True)
 

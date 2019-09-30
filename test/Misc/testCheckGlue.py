@@ -12,4 +12,4 @@
 #ATS:    print "run on linux always"
 
 import sys
-print "testCheckGlue, ", sys.argv[1]
+print("testCheckGlue, ", sys.argv[1])

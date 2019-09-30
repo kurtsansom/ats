@@ -1,12 +1,12 @@
 import sys
-from atsut import is_valid_executable, abspath
+from .atsut import is_valid_executable, abspath
 
 class Executable(object):
     """Information about an executable to use. Can be created from string or
      list of strings."""
     def __init__ (self, value):
-        from configuration import machine
-        if isinstance(value, (str, unicode)):
+        from .configuration import machine
+        if isinstance(value, str):
             self.commandList = machine.split(value)
         else:
             self.commandList = value[:]
