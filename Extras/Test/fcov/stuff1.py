@@ -1,0 +1,5 @@
+print 'I am test one, instantiating a polyhedral mesh.'
+print 'Test one uses features Feature A and Feature B.'
+print '#ATS:MESHTYPE:polyhedral'
+print '#ATS:FEATURE:FeatureA'
+print '#ATS:FEATURE:FeatureB'
