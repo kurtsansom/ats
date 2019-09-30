@@ -1,0 +1,6 @@
+#!/bin/sh
+rm -fr *.logs *.out
+rm -fr Test/*.logs Test/*.out
+rm -fr Test/simple/*.logs Test/simple/*.out
+rm -fr Test/delta/*.logs Test/delta/*.out
+rm -fr Test/psweep/*.logs Test/psweep/*.out

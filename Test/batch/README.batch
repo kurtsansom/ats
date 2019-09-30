@@ -1,0 +1,23 @@
+batch.ats contains 4 source lines.
+
+filter test (filter_test.ats) - It selects one out of 3 test scripts that 
+matches np=1, and then submit the test script to batch system.
+
+stickdefs test (stickdefs_test.ats) - It is a batch submission test with
+stickdefs('batch=1') to see if iftest_2tests.py is submitted to batch system.
+
+ifTest.ats - It contains 2 lines. stick_iftest.py contains stick(batch=1'),
+so it is to be submitted to batch system.
+interactivetest.py contains "if cond: test(...,batch=1)" and expect to be
+submitted to batch system.
+
+There is source('batchtest/simpletest.py') to see if it is either skipped or
+submitted to batch depending on ats option of "-b bank_acct".
+
+
+1) if you do a "ats batch.ats", 4 tests are skipped, and 3 tests are filtered.
+   4 skipped tests has "batch=1" set, so it is as it should.
+
+2) if you do a "ats -b axcode batch.ats", then it runs under batch, and
+   4 skipped tests above should be submitted to the batch system.
+

@@ -1,0 +1,12 @@
+#!/usr/bin/env python
+import os, sys
+from ats import manager, FAILED, TIMEDOUT
+andyroidDefinitions = os.environ.get('andyroidDefinitions')
+manager.source(andyroidDefinitions)
+manager.main()
+for test in manager.testlist:
+    if test.status in [FAILED, TIMEDOUT]:
+        if not test.options.get('development'):
+            print >>sys.stderr, "Unexpected failure:", test
+
+print "All done."

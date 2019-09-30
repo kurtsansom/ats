@@ -1,0 +1,19 @@
+exclude *.logs
+exclude atsb
+prune build
+prune dist
+graft Lib
+graft Test
+graft Extras
+graft docs
+prune docs/build
+graft Examples
+graft Machines
+graft LC  # machine files and other utilities for LLNL machines
+include setup.py
+include README
+include LICENSE-COPYRIGHT.txt
+include clean
+
+
+

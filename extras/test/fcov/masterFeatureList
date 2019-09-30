@@ -1,0 +1,10 @@
+stick(tier=a)
+FeatureA
+FeatureB
+
+stick(tier=b)
+FeatureC<polygonal>
+
+stick(tier=c)
+FeatureC<polyhedral>
+FeatureD<all>
