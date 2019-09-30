@@ -1,0 +1,3 @@
+source('ale/ale.ats')
+wait()  # test wait stuff
+source('flag/testflag')

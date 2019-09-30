@@ -1,0 +1,45 @@
+import os
+glue(physics=[])
+stick(level=2)
+source('Full/eos/eos')
+source('Full/hydro/hydro')
+tbad = test('Full/badfile.py', label='via test statement')
+source('Full/badfile.py', label='badfile sourced')
+u = testif(tbad, 'Full/testsup.py', label='depending on badfile')
+u.expectedResult = SKIPPED
+source('Full/ptest.ats')
+source('Full/cs/cs')
+wait()
+t=test('Full/testsup.py', priority=12)
+testif(t, 'Full/testinf.py', label='good master', priority=5)
+if ~test('Full/testsup.py', label='bad if'):
+    test('Full/testinf.py', label='bad if').expectedResult = SKIPPED
+u = test('Full/badfile.py', label='failing as master')
+u2 = testif(u, 'Full/testinf.py', label='failed master')
+u2.expectedResult = SKIPPED
+tgood = test('Full/testsup.py', label='a good master')
+~testif(tgood, 'Full/testwz.py', label = 'kamikaze with good master')
+source('Full/checkGlue.ats')
+mypy = sys.executable + " -c" 
+d = debug()
+debug(4)
+debug(d)
+assert debug() == d
+t = test(executable = mypy,  clas = "\"print '#ATS: 3+4'\"", keep=1)
+t.notes.append("Command-line argument is " + str(t.clas))
+source('waitfor1.ats')
+source('level.ats')
+
+def addOn (results, m):
+    results.numberOfTests = len(m.testlist)
+manager.onSave(addOn)
+
+def runOrderSort(t1, t2):
+    return t1.runOrder - t2.runOrder
+
+def showRunOrder(m):
+    ran = [t for t in m.testlist if t.runOrder > 0]
+    ran.sort(runOrderSort)
+    for t in ran:
+        log(t.runOrder, t.serialNumber, t.groupNumber, t.name, echo=True)
+onExit(showRunOrder)

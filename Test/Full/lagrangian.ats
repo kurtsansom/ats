@@ -1,0 +1,2 @@
+log('Filtering for Lagrangian only')
+filter("'Lagrangian' in physics")

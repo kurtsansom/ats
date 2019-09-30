@@ -1,0 +1,9 @@
+
+source("../../andyroid/andyroid.ats")
+andyroid = get('andyroid')
+
+stick(level=10)
+andyroid( 'test1.in', delta=True, alpha=2.0, label="delta, alpha 2.0")
+
+stick(level=30)
+andyroid( 'test1.in', delta=True, alpha=3.0, label="delta, alpha 3.0")

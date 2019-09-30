@@ -1,0 +1,5 @@
+test(label='waitfor2 first')
+test(label='waitfor2 second')
+wait()
+test(label='waitfor2 third')
+

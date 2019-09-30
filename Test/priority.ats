@@ -1,0 +1,21 @@
+def stats(t):
+    dp = t.depends_on
+    if dp is not None: dp = dp.serialNumber
+    return (t.serialNumber, t.runOrder, t.totalPriority, t.priority, dp, t.waitUntil)
+
+def showp(m):
+    print "serialNumber, runOrder, totalPriority, priority, depends_on, waitUntil"
+    x = [stats(t) for t in m.testlist]
+    for w in x:
+        print w
+
+onExit(showp)
+t = test('priority.py')
+t2 = testif(t, 'priority.py')
+t3 = testif(t, 'priority.py', priority = 5)
+t4 = testif(t2, 'priority.py')
+wait()
+test('priority.py')
+test('priority.py')
+
+

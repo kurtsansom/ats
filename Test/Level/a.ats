@@ -1,0 +1,8 @@
+#a.ats:
+source("b.ats")
+glue(level=10)
+test('c.py', label="level should be 10")
+unglue('level')
+test('c.py', label="level unglued")
+source('testlevel.ats')
+

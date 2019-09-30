@@ -1,0 +1,4 @@
+source('batchtest/ifTest.ats')
+source('batchtest/stickdefs_test.ats')
+source('batchtest/filter_test.ats')
+source('batchtest/simpletest.py')

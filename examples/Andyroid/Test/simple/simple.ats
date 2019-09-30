@@ -1,0 +1,14 @@
+# Basic test of Andyroid
+source("../../andyroid/andyroid.ats")
+andyroid = get('andyroid')
+
+stick(level=10)
+andyroid('test1.in', label = 'Basic')
+
+stick(level=20)
+andyroid('test1.in', delta=True, label = 'Basic delta')
+andyroid('test1.in', delta=True, alpha=2.5, label='Delta with alpha 2.5')
+
+stick(level=30)
+# this test fails 
+andyroid('test2.in', development=True)

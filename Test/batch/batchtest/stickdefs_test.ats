@@ -1,0 +1,2 @@
+stick(batch=1)
+source('iftest_2tests.py')

@@ -1,0 +1,13 @@
+log("Testing the checkglue function           ", echo=True)
+glue(myVar1='apple')
+glue(myVar2= 1900)
+if checkGlue('myVar1') is 'apple':
+    test(sys.executable, "-c 'raise SystemExit,0'", label='checkGlue (test string) passed', executable=1)
+else:
+    test(sys.executable, "-c 'raise SystemExit,1'", label='checkGlue (test string) failed', executable=1)
+
+if checkGlue('myVar2') == 1900:
+    test(sys.executable, "-c 'raise SystemExit,0'", label='checkGlue (test int) passed', executable=1)
+else:
+    test(sys.executable, "-c 'raise SystemExit,1'", label='checkGlue (test int) failed', executable=1)
+

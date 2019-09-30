@@ -1,0 +1,20 @@
+stick(executable=sys.executable, script = 'waitforx.py')
+
+group(label='red group')
+t = test(clas = 'red write')
+testif(t, clas = 'red read')
+
+group(label='blue group')
+t = test(clas = 'blue write', priority = 5)
+testif(t, clas = 'blue read')
+
+group(label='green group')
+t = test(clas = 'green write')
+tf = testif(t, clas = 'grey read')
+tf.notes.append("green group #2 should fail and the files for the entire green group kept.")
+tg = testif(t, clas='green read')
+endgroup()
+
+wait()
+test(executable="/bin/rm", script='', clas="colorout", label="colorout removal", 
+     report=False)

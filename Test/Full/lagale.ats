@@ -1,0 +1,11 @@
+log('Filtering for Lagrangian/ALE')
+filterdefs("""
+def requires (*items):
+    'Does each item appear in physics?'
+    for item in items:
+        if item not in physics:
+            return 0
+    return 1
+""")
+filter("requires('Lagrangian', 'ALE')")
+source('all')

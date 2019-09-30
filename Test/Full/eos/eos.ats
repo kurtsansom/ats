@@ -1,0 +1,3 @@
+source('aeos.py')
+source('leos.py')
+test('leos.py', clas='separate', label='separate')

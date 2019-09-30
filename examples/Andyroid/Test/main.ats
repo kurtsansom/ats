@@ -1,0 +1,14 @@
+# main Andyroid test suite
+# Level 10 and below are always run
+# Level 20 and below are nightly
+# Level 30 and below are weekly
+# Level 40 must be run for release
+
+# set up default value of test option 'development'
+# this is for tests that aren't expected to pass
+glue(development=False)
+
+# the levels are defined locally
+source('simple/simple.ats')
+source('delta/delta.ats')
+source('psweep/psweep.ats')

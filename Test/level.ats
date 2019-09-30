@@ -1,0 +1,3 @@
+log("You can run with --level 17 or just plain.", echo=True)
+tack(independent=True)
+source('Level/a.ats')

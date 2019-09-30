@@ -1,0 +1,4 @@
+log('Fancy test suite; note that one test is expected to fail.', echo=True)
+source('../andyroid/andyroid.ats')
+source('Test/main.ats')
+

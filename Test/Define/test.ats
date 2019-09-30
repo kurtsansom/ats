@@ -1,0 +1,4 @@
+mycodepath=sys.executable + ' ' + abspath('mycode.py')
+manager.define(mycode = mycodepath)
+test(executable=mycodepath, label="top")
+source("sub1/test.ats", mycode2=mycodepath)

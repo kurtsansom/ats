@@ -1,0 +1,9 @@
+glue (executable = "/bin/ls", independent = True)
+test(label='waitfor1 first')
+test(label='waitfor1 second')
+wait()
+source('waitfor2.ats')
+source('waitfor3.ats')
+test(label='waitfor1 third and last', priority=4)
+unglue('executable')
+

@@ -1,0 +1,5 @@
+stick(batch=1)
+filter('np==1')
+source('filterTest2.py')
+source('filterTest3.py')
+source('filterTest1.py')

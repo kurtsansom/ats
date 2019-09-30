@@ -1,0 +1,41 @@
+import os, sys
+here = os.getcwd()
+codeDir = os.path.abspath(os.path.join(here))
+defaultAndyroid = '%s %s/andyroid.py' % (sys.executable, codeDir)
+defaultAndyroidPoster = '%s %s/andyroidPoster.py' % (sys.executable, codeDir)
+
+andyroid = os.environ.get('andyroid', defaultAndyroid)
+andyroidPoster = os.environ.get('andyroidPoster', defaultAndyroidPoster)
+
+count = 0
+def runAndPost(inputFile, outputFile=None, label=None, 
+               delta = False,
+               alpha = None, **options):
+    global count
+    count += 1
+    if outputFile is None:
+        outputFile = 'andyroid%05d.out' % count
+    if label is None: 
+        label = inputFile
+    clas = "-i %s -o %s" % (inputFile, outputFile)
+
+    if delta: 
+        clas += " --delta"
+
+    if alpha is not None:
+        clas += " --alpha %f" % alpha
+
+# Test the code
+    t = test(clas=clas, executable=andyroid, label = label, 
+             name="Andyroid", **options)
+
+# Test the postprocessor
+# report = False means omit separate report for postprocessor if it passes.
+    testif(t, clas=outputFile, executable=andyroidPoster, label=t.name,
+             report=False, name="AndyroidPoster", keep = 1) 
+
+    return t   # may be useful
+
+define(andyroid=runAndPost)
+
+

@@ -1,0 +1,3 @@
+#b.ats:
+stick(level=20)
+test('c.py', label="level should be 20")

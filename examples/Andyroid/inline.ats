@@ -1,0 +1,16 @@
+import os, sys
+codeDir = os.path.abspath(os.path.join(os.getcwd(), 'andyroid'))
+andyroid = '%s %s/andyroid.py' % (sys.executable, codeDir)
+andyroidPoster = '%s %s/andyroidPoster.py' % (sys.executable, codeDir)
+stick(clas="-i %(inputFile)s -o %(outputFile)s %(opts)s")
+stick(opts='')
+
+glue(level=10)
+test(executable=andyroid, inputFile='test1.in', outputFile="test1.out", 
+          label="test1")
+
+glue(level=20) 
+t = test(executable=andyroid, inputFile='test1.in', outputFile="test1d.out", 
+          opts="--delta", label="test1d")
+testif(t, clas = 'test1d.out', executable=andyroidPoster, label='test1dpost', 
+       keep=1)

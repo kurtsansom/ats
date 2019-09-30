@@ -1,0 +1,8 @@
+# simplest example of running Android under ATS
+import os
+# this is the system-independent way to say "python andyroid/andyroid.py"
+andyroid =sys.executable + ' ' + os.path.join("andyroid", "andyroid.py")
+test(executable = andyroid,
+     clas = '-i test1.in -o test1.out',
+     label= 'test1')
+

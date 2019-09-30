@@ -1,0 +1,8 @@
+define(foo="foo")
+logDefinitions("mycode", "mycode2", "foo", echo=True)
+test(executable=mycode, label='sub1 via define')
+test(executable=mycode2, label='sub1 via source option')
+undefine("foo")
+logDefinitions("foo")
+
+
