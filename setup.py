@@ -13,9 +13,9 @@ import sys
 try:
     import ats
 except ImportError:
-    print >>sys.stderr, "ats module cannot be imported; check Python path."
-    print >>sys.stderr, sys.path
-    raise SystemExit, 1
+    print ("ats module cannot be imported; check Python path.", file=sys.stderr)
+    print (sys.path, file=sys.stderr)
+    raise SystemExit(1)
 
 result = ats.manager.main()
 sys.exit(result)
