@@ -1,7 +1,7 @@
 source('andyroid/andyroid.ats')
 andyroid = get('andyroid')
 if not andyroid:
-    print 'Failure in setting up andyroid testing.'
+    print('Failure in setting up andyroid testing.')
     sys.exit()
 glue(level=10)
 andyroid('test1.in', label='test1')
