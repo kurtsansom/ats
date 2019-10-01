@@ -4,10 +4,10 @@ def stats(t):
     return (t.serialNumber, t.runOrder, t.totalPriority, t.priority, dp, t.waitUntil)
 
 def showp(m):
-    print "serialNumber, runOrder, totalPriority, priority, depends_on, waitUntil"
+    print("serialNumber, runOrder, totalPriority, priority, depends_on, waitUntil")
     x = [stats(t) for t in m.testlist]
     for w in x:
-        print w
+        print(w)
 
 onExit(showp)
 t = test('priority.py')

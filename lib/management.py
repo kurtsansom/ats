@@ -49,7 +49,7 @@ Attributes:
 
     def restart(self):
         "Reinitialize basic data structures."
-        self.started = datestamp(int=1)
+        self.started = datestamp(fmt_long=1)
         self.collectTimeEnded = self.started
         self.filters = []
         self.testlist = []
@@ -270,7 +270,7 @@ Attributes:
         if self.testlist:
             log("""
 =========================================================
-ATS RESULTS %s""" % datestamp(int=1), echo = True)
+ATS RESULTS %s""" % datestamp(fmt_long=1), echo = True)
             log('-------------------------------------------------',
                 echo = True)
             self.report()
@@ -278,7 +278,7 @@ ATS RESULTS %s""" % datestamp(int=1), echo = True)
                 echo = True) 
         if not configuration.options.skip:
             log("""
-ATS SUMMARY %s""" % datestamp(int=1), echo = True)
+ATS SUMMARY %s""" % datestamp(fmt_long=1), echo = True)
             self.summary(log)
             self._summary2(log)
             
@@ -288,7 +288,7 @@ ATS SUMMARY %s""" % datestamp(int=1), echo = True)
         log.echo = True
         log("ATS WALL TIME", wallTime())
         log("ATS COLLECTION END", self.collectTimeEnded)
-        log('ATS END', datestamp(int=1))
+        log('ATS END', datestamp(fmt_long=1))
         log('ATS MACHINE TYPE', configuration.MACHINE_TYPE)
         if configuration.batchmachine is not None:
             log('ATS BATCH TYPE', configuration.BATCH_TYPE)
@@ -589,7 +589,7 @@ to allow user a chance to add options and examine results of option parsing.
             self.batchmachine = None 
         self.verbose = configuration.options.verbose or debug()
         log.echo = self.verbose
-        self.started = datestamp(int=1)
+        self.started = datestamp(fmt_long=1)
         self.continuationFileName = ''
         self.atsRunPath = os.getcwd()
         for a in configuration.options.filter:
@@ -641,13 +641,13 @@ to allow user a chance to add options and examine results of option parsing.
             log("ATS error while collecting tests.", echo=True)
             log(traceback.format_exc(), echo=True)
             errorOccurred = True
-            self.collectTimeEnded = datestamp(int=1)
+            self.collectTimeEnded = datestamp(fmt_long=1)
 
         except KeyboardInterrupt:
             log("Keyboard interrupt while collecting tests, terminating.", echo=True)
             errorOccurred = True
 
-        self.collectTimeEnded = datestamp(int=1)
+        self.collectTimeEnded = datestamp(fmt_long=1)
         if errorOccurred:
             return
         
@@ -780,7 +780,7 @@ BATCHED = ats.BATCHED
         r = AttributeDict(
             started = self.started,
             options = self.options,
-            savedTime = datestamp(int=1),
+            savedTime = datestamp(fmt_long=1),
             collectTimeEnded = self.collectTimeEnded,
             badlist = self.badlist,
             filters = self.filters,

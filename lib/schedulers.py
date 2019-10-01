@@ -1,5 +1,7 @@
 """Defines standard scheduler for interactive jobs."""
 import sys, time
+#from functools import cmp_to_key
+import operator
 from .log import AtsLog, log, terminal
 from .atsut import AttributeDict
 from itertools import chain
@@ -7,9 +9,11 @@ from itertools import chain
 from .atsut import debug, RUNNING, TIMEDOUT, PASSED, FAILED, \
      CREATED, SKIPPED, HALTED, EXPECTED, statuses, AtsError
 
-def comparePriorities (t1, t2): 
-    "Input is two tests or groups; return comparison based on totalPriority."
-    return t2.totalPriority - t1.totalPriority
+
+# replaced by key comparison
+# def comparePriorities (t1, t2): 
+#     "Input is two tests or groups; return comparison based on totalPriority."
+#     return t2.totalPriority - t1.totalPriority
 
 class StandardScheduler (object):
     """A (replaceable) object that schedules interactive jobs to the machine under the direction
@@ -40,7 +44,12 @@ class StandardScheduler (object):
                 t.group.totalPriority = t.totalPriority
             else:
                 t.group.totalPriority = max(t.group.totalPriority, t.totalPriority)
-        self.groups.sort(comparePriorities)
+
+        self.groups.sort(key=operator.attrgetter('totalPriority'), reverse=True)
+        # replaced by above
+        # python 3 comparison functions removed
+        # convert comparison function to ley function
+        #self.groups.sort(key=cmp_to_key(comparePriorities))
 
         self.schedule("   Total", "    Test", "Serial", " Group", "Test")
         self.schedule("Priority", "Priority", "Number", "Number", "Name")

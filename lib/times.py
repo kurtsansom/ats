@@ -7,9 +7,9 @@ atsStartTime = time.strftime("%y%m%d%H%M%S",_localtime)
 atsStartTimeLong = time.strftime('%B %d, %Y %H:%M:%S', _localtime)
 
  
-def datestamp (long=0):
+def datestamp (fmt_long=0):
     "Return formatted date and time. Shorter version is just time."
-    if int:
+    if fmt_long:
         return time.strftime('%B %d, %Y %H:%M:%S')
     else:
         return time.strftime('%H:%M:%S')
@@ -114,24 +114,24 @@ def timeSpecToSec(spec):
 
     try:
         if posH > 0:
-            h = string.atoi(spec[0:posH])
+            h = int(spec[0:posH])
         else:
             h = 0
 
         if posM > posH:
-            m =  string.atoi(spec[posH+1:posM])
+            m =  int(spec[posH+1:posM])
         else:
             m = 0
             posM = posH
 
         if posS > posM:
-            s =  string.atoi(spec[posM+1:posS])
+            s =  int(spec[posM+1:posS])
         else:
             sp = spec[posM+1:]
             if not sp:
                 s = 0
             else:
-                s = string.atoi(sp)
+                s = int(sp)
                 
         return (h*3600 + 60 * m + s)
     except Exception as e:

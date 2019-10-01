@@ -6,21 +6,22 @@ rootedPython = os.path.join("%(ATSROOT)s", pythonName)
 
 # make these not conflict with one another
 stick(independent=True)
-test(sys.executable, "-c 'raise SystemExit,0'", label='pyok', executable=1)
+test(sys.executable, "-c 'raise SystemExit(0)'", label='pyok', executable=1)
 group(label="failing group member")
-t0 = test(sys.executable, "-c 'print 3.14159'", label='pyprint', executable=1)
-test(sys.executable, "-c 'raise SystemExit,1'", label='pyfail', 
+t0 = test(sys.executable, "-c 'print(3.14159)'", label='pyprint', executable=1)
+test(sys.executable, "-c 'raise SystemExit(1)'", label='pyfail', 
 executable=1)
 endgroup()
-test(clas="-c 'raise SystemExit,0'", label='clasonly', priority=3)
+
+test(clas="-c 'raise SystemExit(0)'", label='clasonly', priority=3)
 
 t1=test(label='noarguments', timelimit='1m5s', priority=3)
 t1.expectedResult=TIMEDOUT
 t2=testif(t1, label='pytimedparent', clas="-c 'print(4)'", executable=sys.executable)
 testif(t2, label='pytimedgparent', clas="-c 'print(4)'")
 t3=testif(t0, label='pygoodchild', clas="-c 'print(4)'")
-t4 = test(clas="-c 'raise SystemExit,0'", label='okbuthasbadchild')
-~testif(t4, clas = "-c 'raise SystemExit,1'", label='badwithgoodparent')
+t4 = test(clas="-c 'raise SystemExit(0)'", label='okbuthasbadchild')
+~testif(t4, clas = "-c 'raise SystemExit(1)'", label='badwithgoodparent')
 #duplicate label test
 test(executable=sys.executable, clas="-c 'print(5)'", label="pyok")
 test(script='sleeper.py', label='20 sec sleep')
@@ -36,13 +37,13 @@ tf = test(clas = "-c 'print(6)'", label="batch filter", juicy=False,
 manager.filters.remove('juicy')
 
 group()
-test(rootedPython, "-c 'raise SystemExit,0'", label='dollarroot',
+test(rootedPython, "-c 'raise SystemExit(0)'", label='dollarroot',
   executable=1)
-test(clas = "-c 'raise SystemExit,0'", executable=rootedPython,
+test(clas = "-c 'raise SystemExit(0)'", executable=rootedPython,
    label='dollarroot2')
 tack(delta = 1)
 endgroup()
-test('Subtest/ptest2.py', label='subtest')
-source('Subtest/ptest3.py')
+test('subtest/ptest2.py', label='subtest')
+source('subtest/ptest3.py')
 
 
