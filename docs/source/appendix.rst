@@ -11,7 +11,7 @@ Modules
 *******
 
 .. index:: 
-   :pair: ats;module documentation
+   pair: ats;module documentation
 
 The ats module contains several submodules documented below. The ``ats`` program
 imports the ``ats`` module and calls the manager's ``main`` routine. 
