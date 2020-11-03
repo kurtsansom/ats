@@ -1664,7 +1664,7 @@ The file ``Lib/machines.py`` is well documented and it is usually not a large
 problem to get things working. 
 
 .. index:: 
-   :pair:installation;setup.py
+   pair:installation;setup.py
 
 Once you have your module file ready, you write a setup.py file to go with it::
 
@@ -1722,9 +1722,9 @@ Resources available in it are all imported from internal modules.
 
    Is the test class.
 
-.. function:: debug(value = None)
+.. .. function:: debug(value = None)
 
-   Is the debug function
+..    Is the debug function
 
 .. exception:: AtsError 
 

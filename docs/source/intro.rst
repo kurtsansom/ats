@@ -112,12 +112,10 @@ directory execute::
 
    python setup.py install
 
-Public releases are at http://code.google.com/p/ats
+Public releases are at https://github.com/kurtsansom/ats
 
-The README.txt file contains installation instructions. ATS has been tested with 
-Python 2.6 or later, available at http://python.org. 
-
-ATS should translate to Python 3 by using the 2to3 utility but this has not yet been tried.
+The README.md file contains installation instructions. ATS has been modified to support
+Python 3.x versions but make work on other versions available at http://python.org. 
 
 ATS should work, or be made to work, on any system which can run Python via
 a command window. In particular it works out of the box on any Linux or Mac
@@ -181,7 +179,10 @@ Makefile in the ``docs`` directory will render the documents into
 the ``build`` subdirectory if appropriate parts of Sphinx have been 
 installed.
 
-If you install ``setuptools`` into your Python, you can get Sphinx with::
+you can get Sphinx with::
 
-   easy_install -U Sphinx
+    pip install -U sphinx
 
+or reference the sphinx documentation `Sphinx Installation Instructions`_
+
+.. _Sphinx Installation Instructions: https://www.sphinx-doc.org/en/master/usage/installation.html

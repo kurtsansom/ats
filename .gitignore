@@ -3,3 +3,5 @@
 **/dist
 MANIFEST
 ats
+**/*.out
+**/*.logs
